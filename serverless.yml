@@ -1,0 +1,40 @@
+service: grabacion-rebajas
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  profile: default
+  memorySize: 256
+  timeout: 29
+  # environment:
+  #   NODE_OPTIONS: --enable-source-maps
+  #   STAGE: ${opt:stage, 'dev'}
+  #   DB_AVTIA_USER: ${env:DB_AVTIA_USER}
+  #   DB_AVTIA_PASSWORD: ${env:DB_AVTIA_PASSWORD}
+  #   DB_AVTIA_HOST: ${env:DB_AVTIA_HOST}
+  #   DB_AVTIA_PORT: ${env:DB_AVTIA_PORT}
+  #   #GDN_ORACLE_SCHEMA: ${env:GDN_ORACLE_SCHEMA}
+  #   #GDN_ORACLE_CONNECT_STRING: ${env:GDN_ORACLE_CONNECT_STRING}
+
+functions:
+  user-consultation-history:
+    handler: index.handler
+    name: "node-dispatch-service"
+    description: "node-dispatch-service"
+    events:
+      - http:
+          path: /api/v2/gdn/app-interno/service/grabacion-rebajas/{proxy+}
+          method: any
+          cors: false
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3000
+    noPrependStageInUrl: true
+    #lambdaPort: 3002
+#package:
